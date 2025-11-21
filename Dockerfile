@@ -24,4 +24,6 @@ RUN php artisan config:cache || true \
     && php artisan route:cache || true \
     && php artisan view:cache || true
 
+CMD ["sh", "-c", "until php artisan migrate --seed --force; do echo 'Waiting for database...'; sleep 3; done"]
+
 EXPOSE 9000
