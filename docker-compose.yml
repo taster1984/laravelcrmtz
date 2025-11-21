@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    container_name: tzlaravel_app
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - db
+
+  web:
+    image: nginx:stable
+    container_name: tzlaravel_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8
+    container_name: tzlaravel_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravel
+    ports:
+      - "3306:3306"
