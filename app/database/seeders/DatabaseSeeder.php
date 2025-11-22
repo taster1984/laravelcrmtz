@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\File;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,9 +38,22 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 1; $i <= 5; $i++) {
             $customer = Customer::factory()->create();
-            Ticket::factory()->for($customer)->create([
+            $ticket = Ticket::factory()->for($customer)->create([
                 'status' => 'new',
             ]);
+            for ($j = 1; $j <= 2; $j++) {
+                $file = File::factory()->create([
+                    'ticket_id' => $ticket->id,
+                    'title'     => fake()->sentence(3),
+                    'type'      => 'text/plain',
+                ]);
+
+                $temp = tmpfile();
+                $path = stream_get_meta_data($temp)['uri'];
+                file_put_contents($path, 'fake file content');
+
+                $file->addMedia($path)->toMediaCollection('files');
+            }
             Ticket::factory()->for($customer)->create([
                 'status'=>fake()->randomElement(['in_progress', 'processed']),
             ]);

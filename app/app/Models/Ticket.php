@@ -21,4 +21,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }
