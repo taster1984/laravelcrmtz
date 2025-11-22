@@ -12,7 +12,7 @@ class Ticket extends Model
     protected $fillable = [
         'customer_id',
         'subject',
-        'text',
+        'body',
         'status',
         'response_date',
     ];
