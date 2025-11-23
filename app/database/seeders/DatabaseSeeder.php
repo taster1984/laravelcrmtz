@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                 $path = stream_get_meta_data($temp)['uri'];
                 file_put_contents($path, 'fake file content');
 
-                $file->addMedia($path)->toMediaCollection('files');
+                $file->addMedia($path)->usingFileName($file->title.".txt")->toMediaCollection('files');
             }
             Ticket::factory()->for($customer)->create([
                 'status'=>fake()->randomElement(['in_progress', 'processed']),
